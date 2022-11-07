@@ -1,16 +1,19 @@
 import router from '@/router'
 import axios from 'axios'
 import { createStore, useStore } from 'vuex'
+import setAxios from '@/axios'
 useStore
 
 const store = createStore({
   state: {
     user: null,
-    movies: [],
+    movies: JSON.parse(localStorage.getItem('user')),
+    User: JSON.parse(localStorage.getItem('user')),
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload
+      state.User = payload
       console.log('user state changed', state.user)
     },
     setMovies(state, payload) {
@@ -25,8 +28,21 @@ const store = createStore({
       console.log('get all movies')
     },
 
+    // setState(context) {
+    //   try {
+    //     const response = JSON.parse(localStorage.getItem('user'))
+    //     // localStorage.getItem('user')
+    //     // this.state.user = response
+    //     console.log(JSON.parse(localStorage.getItem('user')))
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+
+    //   //this.user = response.data
+    // },
+
     /// SIGN UP
-    async signUp(context, { name, email, password }) {
+    async signUp(context, { name, email, password, phone }) {
       console.log('signup action')
 
       //   const response = await fetch('http://localhost:8500/api/users/login', {
@@ -38,18 +54,22 @@ const store = createStore({
       //   })
       // try {
       const response = await axios({
+        headers: {},
         method: 'post',
-        url: 'http://192.168.88.251:8500/api/users/register',
+        url: 'https://deca-learn.herokuapp.com/users/register',
         data: {
-          name,
+          fullName: name,
           email,
           password,
+          phone,
         },
       })
       const user = response
       console.log(user.data)
 
       if (user) {
+        localStorage.setItem('token', user.data.token)
+        localStorage.setItem('user', JSON.stringify(user.data))
         router.push('/')
         context.commit('setUser', user.data)
       }
@@ -61,18 +81,21 @@ const store = createStore({
 
       const response = await axios({
         method: 'post',
-        url: 'http://192.168.88.251:8500/api/users/login',
+        url: 'https://deca-learn.herokuapp.com/users/login',
         data: {
           email,
           password,
         },
       })
       const user = response
-      console.log(user.data)
+      // console.log(user.data)
 
       if (user) {
+        localStorage.setItem('token', user.data.token)
+        localStorage.setItem('user', JSON.stringify(user.data))
         router.push('/')
         context.commit('setUser', user.data)
+        setAxios()
       }
       // } else {
       //   throw new Error('could not complete signup')
@@ -83,6 +106,8 @@ const store = createStore({
 
     async logout(context) {
       //await signOut(auth)
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
       context.commit('setUser', null)
       router.push('/')
     },

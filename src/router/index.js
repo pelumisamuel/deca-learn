@@ -2,8 +2,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
-import MovieView from '../views/MovieView.vue'
+import editCourseView from '../views/editCourseView.vue'
 import profileView from '../views/profileView.vue'
+import addCourseView from '../views/addCourseView.vue'
 
 const routes = [
   {
@@ -23,14 +24,19 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: '/:id',
-    name: 'movie',
-    component: MovieView,
+    path: '/editCourse/:id',
+    name: 'editCourse',
+    component: editCourseView,
   },
   {
     path: '/profile',
     name: 'profile',
     component: profileView,
+  },
+  {
+    path: '/addCourse',
+    name: 'addCourse',
+    component: addCourseView,
   },
   {
     path: '/about',

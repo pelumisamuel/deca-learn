@@ -1,80 +1,58 @@
 <template>
-  <div
-    class="login-bg h-screen pt-36 bg-cover"
-    style="
-      background-image: url('https://images.unsplash.com/photo-1527843812948-a8c2ddd2fb68?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740');
-    "
-  >
+  <div class="login-bg h-screen pt-36 bg-cover">
     <div class="block pt-3 p-8 mx-auto rounded-lg shadow-lg bg-white max-w-md">
+      <!-- <Message
+        class="text-center h-16 my-auto"
+        v-bind:class="!err && 'hidden'"
+        :message="err"
+      /> -->
       <Message
         class="text-center h-16 my-auto"
         v-bind:class="!err && 'invisible'"
         :message="err"
+        :color="messColor === true && 'bg-green-100 text-white'"
       />
+
       <div class="w-full"></div>
-      <p class="text-gray-700 font-bold text-2xl text-center">Register</p>
-      <form @submit.prevent="registerSubmit" class="my-2">
-        <div class="grid grid-cols-2 gap-4">
-          <div class="form-group mb-6">
-            <input
-              type="text"
-              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="first-name"
-              v-model="firstName"
-              aria-describedby="emailHelp123"
-              placeholder="First name"
-              required
-            />
-          </div>
-          <div class="form-group mb-6">
-            <input
-              type="text"
-              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="exampleInput124"
-              aria-describedby="emailHelp124"
-              placeholder="Last name"
-              v-model="lastName"
-              required
-            />
-          </div>
-        </div>
+      <p class="text-gray-700 font-bold text-2xl text-center">Add New Course</p>
+      <form @submit.prevent="submit" class="my-2">
         <div class="form-group mb-6">
           <input
-            type="email"
+            type="text"
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="exampleInput125"
-            placeholder="Email address"
-            v-model="email"
+            placeholder="Course Title"
+            v-model="title"
+            required
+          />
+        </div>
+        <div class="form-group mb-6">
+          <textarea
+            type="text"
+            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            id="exampleInput125"
+            placeholder="course Description"
+            v-model="description"
             required
           />
         </div>
         <div class="form-group mb-6">
           <input
-            type="tel"
-            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            id="exampleInput125"
-            placeholder="phone number"
-            v-model="phone"
-            required
-          />
-        </div>
-        <div class="form-group mb-6">
-          <input
-            type="password"
+            type="number"
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="exampleInput126"
-            placeholder="Password"
-            v-model="password"
+            placeholder="Price"
+            v-model="price"
             required
           />
         </div>
         <div class="form-group mb-6">
           <input
-            type="password"
+            type="text"
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="exampleInput1"
-            placeholder="Confirm Password"
-            v-model="passwordII"
+            placeholder="Image Url"
+            v-model="image"
             required
           />
         </div>
@@ -83,80 +61,103 @@
           type="submit"
           class="w-full px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
         >
-          Register
+          Submit
         </button>
-        <p class="text-gray-800 mt-6 text-center">
-          Already a member?
-          <router-link
-            to="/login"
-            class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out"
-            >Log in</router-link
-          >
-        </p>
       </form>
     </div>
   </div>
 </template>
+
 <script>
 import Message from '@/components/Message.vue'
+//import { title } from 'process'
 import { ref } from 'vue'
+//import router from '@/router'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import axios from 'axios'
 
 export default {
   setup() {
-    const firstName = ref('')
-    const lastName = ref('')
-    const email = ref('')
-    const password = ref('')
-    const passwordII = ref('')
-    const phone = ref('')
+    const title = ref('')
+    const description = ref('')
+    const price = ref('')
+    const image = ref('')
     const err = ref(null)
-
+    const messColor = ref(false)
     const store = useStore()
     const router = useRouter()
-
-    const registerSubmit = async () => {
+    const submit = async () => {
       try {
-        if (password.value !== passwordII.value) {
-          err.value = 'passwords do not match'
+        if (description.value.length > 150) {
+          err.value = 'Description should not be more than 150 characters'
+
           setTimeout(() => {
             err.value = null
           }, 3000)
           return
         }
-        await store.dispatch('signUp', {
-          name: `${firstName.value} ${lastName.value}`,
-          email: email.value,
-          password: password.value,
-          phone: phone.value,
+        if (title.value.length > 30) {
+          err.value = 'title should not be more than 30 characters'
+          setTimeout(() => {
+            err.value = null
+          }, 3000)
+          return
+        }
+        const response = await axios.post('/courses', {
+          title: title.value,
+          description: description.value,
+          price: price.value,
+          image: image.value,
         })
-      } catch (error) {
-        console.log(error)
+        console.log(response.data)
+        messColor.value = true
+        err.value = 'Course Added successfully'
+        title.value = ''
+        description.value = ''
+        price.value = ''
+        image.value = ''
 
+        setTimeout(() => {
+          err.value = null
+          router.push(`/profile`)
+        }, 3000)
+
+        // if (password.value !== passwordII.value) {
+        //   err.value = 'passwords do not match'
+        //   setTimeout(() => {
+        //     err.value = null
+        //   }, 3000)
+        //   return
+        // }
+        // await store.dispatch('signUp', {
+        //   name: `${firstName.value} ${lastName.value}`,
+        //   email: email.value,
+        //   password: password.value,
+        //   phone: phone.value,
+        // })
+      } catch (error) {
+        //console.log(error)
         err.value =
           error.response && error.response.data.error
             ? error.response.data.error.message
             : error.response.data.message
-
         setTimeout(() => {
           err.value = null
         }, 5000)
       }
     }
-
     return {
-      registerSubmit,
+      submit,
       err,
-      email,
-      password,
-      lastName,
-      firstName,
-      passwordII,
-      phone,
+      title,
+      price,
+      description,
+      image,
+      messColor,
     }
   },
-  name: 'registerView',
+  name: 'addCourseView',
   components: { Message },
   methods: {},
 }

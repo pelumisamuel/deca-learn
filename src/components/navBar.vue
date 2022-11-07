@@ -1,8 +1,8 @@
 <template>
-  <nav class="flex mb-7 w-full justify-between mb- bg-red-800">
+  <nav class="flex mb-7 w-full justify-between mb- bg-purple-600">
     <div>
       <router-link class="logo md:text-xl" style="color: white" to="/"
-        >APOCALYPSO</router-link
+        >DecaLearn</router-link
       >
     </div>
     <div class="flex space-x-5">
@@ -12,7 +12,7 @@
       </div>
       <div v-if="user">
         <router-link class="mr-4" to="/profile">
-          Hello, {{ user.name }}</router-link
+          Hello, {{ user.user.fullName }}</router-link
         >
         <router-link @click="logUserOut" to="/">Log out</router-link>
       </div>
@@ -32,7 +32,7 @@ export default {
     const logUserOut = () => {
       store.dispatch('logout')
     }
-    return { logUserOut, user: computed(() => store.state.user) }
+    return { logUserOut, user: computed(() => store.state.User) }
   },
 
   name: 'NavBar',

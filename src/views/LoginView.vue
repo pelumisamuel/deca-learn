@@ -104,8 +104,8 @@ export default {
       } catch (error) {
         err.value =
           error.response && error.response.data.error
-            ? error.response.data.error
-            : error.response.data
+            ? error.response.data.error.message
+            : error.response.data.message
 
         setTimeout(() => {
           err.value = null

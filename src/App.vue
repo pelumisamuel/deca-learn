@@ -6,10 +6,41 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import axios from 'axios'
 import NavBar from './components/navBar.vue'
 
 export default {
   components: { NavBar },
+  setup() {
+    const store = useStore()
+    // const getUserDetails = async () => {
+    //   const user = store.state.user
+    //   try {
+    //     const response = await axios.get(`/users/profile`)
+    //     console.log(response)
+    //     localStorage.setItem(
+    //       'user',
+    //       JSON.stringify({
+    //         id: response.data.id,
+    //         email: response.data.email,
+    //         name: response.data.fullName,
+    //       })
+    //     )
+    //     // console.log(localStorage.getItem('token'))
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
+
+    const setState = async () => {
+      await store.dispatch('setState')
+    }
+    return { setState }
+  },
+  // created() {
+  //    this.getUserDetails()
+  // },
 }
 </script>
 
