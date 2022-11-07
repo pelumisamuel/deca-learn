@@ -1,5 +1,10 @@
 # apocalypso-fe
 
+## Live demo at
+```
+https://deca-learn-app.netlify.app
+```
+
 ## Project setup
 ```
 npm install
