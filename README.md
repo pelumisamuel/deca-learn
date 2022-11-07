@@ -1,4 +1,4 @@
-# apocalypso-fe
+# Deca-learn-fe
 
 ## Live demo at
 ```
